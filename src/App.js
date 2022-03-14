@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import Basket from './components/Basket';
+import Header from './components/Header';
+import Product from './components/Product';
+import './index.css';
+import products from './products.json';
+import {useState,useEffect} from 'react';
+function App() {  
+  const [basket,setBasket] = useState([]);
+  const [cost,setCost] = useState("");
 
-function App() {
+  useEffect( () => {
+    const totalPrice = basket.reduce((pre,basket) => pre +(basket.amount*basket.price),0);
+    setCost(totalPrice);
+
+  },[basket])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <>
+    <Header/>
+
+    <div className='productContainer'>
+    <div className='productBoxs'>
+
+    {
+      products.map(product => (
+        <Product key = { product.id} basket={basket} setBasket={setBasket}  product={product} />
+        ))
+    }
+
     </div>
-  );
+    <Basket cost={cost} basket={basket}/>
+    </div>
+
+    </>
+    
+    );
 }
 
 export default App;
